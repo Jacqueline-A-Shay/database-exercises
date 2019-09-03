@@ -32,7 +32,7 @@ DESCRIBE titles;
 
 -- table contain date; current_dept_emp, dept_emp, dept_emp_latest_date, dept_manager, salaries, title
 
--- relationship between employees and departments
+-- relationship between employees and departments linked by another table: dept_emp
 -- if joining the 2 tables we'll be able to know what department does each employee belong to 
 
 -- show SQL that created dept_manager
