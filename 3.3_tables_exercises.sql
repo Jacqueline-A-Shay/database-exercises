@@ -1,5 +1,8 @@
 USE employees;
 SHOW TABLES;
+
+SELECT *FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='employees'; 
+
 DESCRIBE employees;
 -- employees contains int(11) as pk, date, varchar(14)(16, enum('M','F')
 
