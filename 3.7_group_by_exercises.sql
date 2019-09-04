@@ -34,3 +34,15 @@ select lower(concat(
                 substr(birth_date, 6,2),
                 substr(birth_date,3,2))) as username from employees
                 group by username;
+
+select count(*) as count_all, count(distinct lower(concat(
+                substr(first_name, 1,1),
+                substr(last_name, 1, 4),
+                "_",
+                substr(birth_date, 6,2),
+                substr(birth_date,3,2)))) as count_distinct, (count(*) -count(distinct lower(concat(
+                substr(first_name, 1,1),
+                substr(last_name, 1, 4),
+                "_",
+                substr(birth_date, 6,2),
+                substr(birth_date,3,2)))))as difference  from employees;
