@@ -117,18 +117,23 @@ JOIN departments AS d
 WHERE de.to_date = '9999-01-01' AND e.emp_no = 10001;
 
 -- part 2 done
-
+-- no2
 SELECT CONCAT(e.first_name, ' ', e.last_name) AS Manager_Full_Name, departments.dept_name as Department_Name
 FROM employees AS e
 JOIN dept_manager as dm ON dm.emp_no = e.emp_no 
 JOIN departments ON departments.dept_no = dm.dept_no
 WHERE dm.to_date = '9999-01-01';
 
-SELECT CONCAT(e.first_name, ' ', e.last_name) AS Manager_Full_Name, departments.dept_name as Department_Name
+-- no 3
+
+SELECT departments.dept_name as Department_Name, CONCAT(e.first_name, ' ', e.last_name) AS Manager_Full_Name 
 FROM employees AS e
-JOIN dept_manager as dm ON dm.emp_no = e.emp_no 
+JOIN dept_manager as dm ON dm.emp_no = e.emp_no
 JOIN departments ON departments.dept_no = dm.dept_no
-WHERE e.gender = 'F' AND dm.to_date = '9999-01-01';
+WHERE e.gender = 'F' AND dm.to_date = '9999-01-01'
+ORDER BY Department_Name;
+
+
 
 -- no5
 SELECT departments.dept_name as Department_Name, CONCAT(e.first_name, ' ', e.last_name) AS Manager_Full_Name, s.salary
@@ -155,4 +160,24 @@ JOIN salaries as s ON s.emp_no = de.emp_no
 WHERE s.to_date = '9999-01-01'
 GROUP BY d.dept_name
 ORDER BY AVG(s.salary) DESC
+LIMIT 1;
+
+-- no8
+SELECT e.first_name, e.last_name
+FROM employees as e
+JOIN salaries as s ON s.emp_no = e.emp_no
+JOIN dept_emp as de ON de.emp_no = e.emp_no
+JOIN departments as d ON d.dept_no = de.dept_no
+WHERE d.dept_name = 'Marketing' AND  s.to_date = '9999-01-01'
+ORDER BY s.salary DESC 
+LIMIT 1;
+
+-- no9
+SELECT CONCAT(e.first_name, ' ', e.last_name) AS Manager_Full_Name, s.salary, departments.dept_name as Department_Name
+FROM employees AS e
+JOIN dept_manager as dm ON dm.emp_no = e.emp_no 
+JOIN salaries as s ON s.emp_no = e.emp_no
+JOIN departments ON departments.dept_no = dm.dept_no
+WHERE dm.to_date = '9999-01-01' AND s.to_date = '9999-01-01'
+ORDER BY s.salary DESC 
 LIMIT 1;
