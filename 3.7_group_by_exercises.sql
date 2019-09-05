@@ -35,6 +35,15 @@ select lower(concat(
                 substr(birth_date,3,2))) as username from employees
                 group by username;
 
+select lower(concat(
+                substr(first_name, 1,1),
+                substr(last_name, 1, 4),
+                "_",
+                substr(birth_date, 6,2),
+                substr(birth_date,3,2))) as username, count(*) from employees
+                group by username
+                having count(*)>1;    
+
 select count(*) as count_all, count(distinct lower(concat(
                 substr(first_name, 1,1),
                 substr(last_name, 1, 4),
