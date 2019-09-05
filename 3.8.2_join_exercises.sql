@@ -90,3 +90,11 @@ JOIN departments ON departments.dept_no = dm.dept_no
 WHERE dm.to_date = '9999-01-01' AND s.to_date = '9999-01-01'
 ORDER BY s.salary DESC
 LIMIT 1;
+
+-- bonus no10
+SELECT CONCAT(e.first_name, '  ', e.last_name) AS 'Manager Name'
+FROM current_dept_emp AS cde
+JOIN dept_manager as dm ON dm.emp_no = cde.emp_no
+JOIN employees as e ON e.emp_no = cde.emp_no
+WHERE dm.to_date = '9999-01-01';
+
