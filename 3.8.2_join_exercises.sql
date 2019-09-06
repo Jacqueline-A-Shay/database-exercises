@@ -82,6 +82,8 @@ LIMIT 1;
 
 
 -- no9
+-- Which current department manager has the highest salary?
+
 SELECT CONCAT(e.first_name, ' ', e.last_name) AS Manager_Full_Name, s.salary, departments.dept_name as Department_Name
 FROM employees AS e
 JOIN dept_manager as dm ON dm.emp_no = e.emp_no
@@ -92,15 +94,24 @@ ORDER BY s.salary DESC
 LIMIT 1;
 
 -- bonus no10
-SELECT CONCAT(e.first_name, '  ', e.last_name) as 'Employee Name', d.dept_name as 'Department Name'
-FROM employees as e
-	JOIN dept_emp as de ON de.emp_no = e.emp_no
-	JOIN departments as d ON  de. dept_no = d.dept_no
-		WHERE de.to_date = '9999-01-01' 
-		JOIN (
-		SELECT CONCAT(e.first_name, ' ', e.last_name) AS 'Manager Name'		
-		FROM employees AS e
-		JOIN dept_manager AS dm ON dm.emp_no = e.emp_no 
-		JOIN departments ON departments.dept_no = dm.dept_no
-		WHERE dm.to_date = '9999-01-01'
-		) as z ON z.emp_no = e.emp_no;
+-- Find the names of all current employees, their department name, and their current manager's name.
+
+SELECT CONCAT(e.first_name, ' ', e.last_name) as 'FULL NAME', d.dept_name AS 'Department Name'
+FROM employees e
+ 
+ 	JOIN dept_emp de ON de.emp_no = e.emp_no
+ 	
+ 	JOIN departments d ON d.dept_no = de.dept_no
+ 	
+ 	JOIN dept_manager dm ON dm.dept_no = de.dept_no
+ 	
+ 	LEFT JOIN (
+ 	
+ 	SELECT dm.dept_no FROM dept_manager as dm
+ 	JOIN  employees as e ON dm.emp_no = e.emp_no
+ 	JOIN departments ON departments.dept_no = dm.dept_no 
+ 
+ 	 ) dm ON dm.emp_no = e.emp_no
+ 	 
+ 	 WHERE de.to_date = '9999-01-01' AND dm.to_date = '9999-01-01';
+
