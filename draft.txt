@@ -1,0 +1,33 @@
+SELECT d.*, de.*, dm.*,e.*
+FROM employees e
+ 
+ 	JOIN dept_emp de ON de.emp_no = e.emp_no
+ 	
+ 	JOIN departments d ON d.dept_no = de.dept_no
+ 	
+ 	JOIN dept_manager dm ON dm.dept_no = de.dept_no
+ 	
+ 	JOIN (
+ 	
+ 	SELECT dept_no FROM dept_manager 
+ 	
+ 	 ) dm ON dm.emp_no = e.emp_no
+ 	 
+ 	 WHERE de.to_date = '9999-01-01' ;
+ 	
+ 	
+ 	; -- AND dm.to_date = '9999-01-01';
+-- CONCAT(e.first_name, '  ', e.last_name) as 'FULL NAME', d.dept_name AS 'Department Name'  	
+-- THIS NEED TO GO IN SUBQUERRY JOIN dept_manager dm ON dm.emp_no = e.emp_no
+
+SELECT  a.*, b.*
+FROM    tbl_customers a
+            INNER JOIN tbl_emails_sent b
+                ON a.customerid = b.customerid
+            INNER JOIN
+            (
+                SELECT      customerid, MAX(datesent) maxSent
+                FROM        tbl_emails_sent
+                GROUP BY    customerid
+            ) c ON  c.customerid = b.customerid AND
+                    c.maxSent = b.datesent;
