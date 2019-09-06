@@ -92,9 +92,15 @@ ORDER BY s.salary DESC
 LIMIT 1;
 
 -- bonus no10
-SELECT CONCAT(e.first_name, '  ', e.last_name) AS 'Manager Name'
-FROM current_dept_emp AS cde
-JOIN dept_manager as dm ON dm.emp_no = cde.emp_no
-JOIN employees as e ON e.emp_no = cde.emp_no
-WHERE dm.to_date = '9999-01-01';
-
+SELECT CONCAT(e.first_name, '  ', e.last_name) as 'Employee Name', d.dept_name as 'Department Name'
+FROM employees as e
+	JOIN dept_emp as de ON de.emp_no = e.emp_no
+	JOIN departments as d ON  de. dept_no = d.dept_no
+		WHERE de.to_date = '9999-01-01' 
+		JOIN (
+		SELECT CONCAT(e.first_name, ' ', e.last_name) AS 'Manager Name'		
+		FROM employees AS e
+		JOIN dept_manager AS dm ON dm.emp_no = e.emp_no 
+		JOIN departments ON departments.dept_no = dm.dept_no
+		WHERE dm.to_date = '9999-01-01'
+		) as z ON z.emp_no = e.emp_no;
