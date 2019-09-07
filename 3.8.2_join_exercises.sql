@@ -95,6 +95,24 @@ LIMIT 1;
 
 -- bonus no10
 -- Find the names of all current employees, their department name, and their current manager's name.
+SELECT CONCAT(e.first_name, ' ', e.last_name) as 'EMPLOYEE NAME', d.dept_name AS 'Department Name'
+FROM employees e
+ 
+ 	LEFT JOIN dept_emp de ON de.emp_no = e.emp_no
+ 	
+ 	LEFT JOIN departments d ON d.dept_no = de.dept_no
+ 	
+ 	LEFT JOIN (
+ 	
+ 	SELECT CONCAT(e.first_name, ' ', e.last_name) as 'Manager Name', dm.dept_no FROM dept_manager as dm
+ 	JOIN  employees as e ON dm.emp_no = e.emp_no
+ 	JOIN departments ON departments.dept_no = dm.dept_no 
+ 	WHERE dm.to_date = '9999-0101'
+ 
+ 	 ) as m ON m.dept_no = d.dept_no
+ 	 
+ 	 WHERE de.to_date = '9999-01-01';
+
 
 SELECT CONCAT(e.first_name, ' ', e.last_name) as 'FULL NAME', d.dept_name AS 'Department Name'
 FROM employees e
