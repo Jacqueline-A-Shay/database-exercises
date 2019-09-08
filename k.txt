@@ -1,0 +1,7 @@
+	SELECT SUM(all_aamod)  all_aamod ,COUNT(*) AS Titles
+	FROM
+	(SELECT COUNT(*)  all_aamod ,t.title
+	FROM employees e
+	JOIN titles t ON e.emp_no = t.emp_no /* AND t.to_date > NOW() */
+ 	WHERE e.first_name = 'Aamod' 
+ 	GROUP BY t.title) ts;
