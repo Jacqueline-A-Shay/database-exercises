@@ -22,6 +22,24 @@ select* from digitss;
 -- NO 3.
 -- Find out how the average pay in each department compares to the overall average pay. In order to make the comparison easier, you should use the Z-score for salaries. In terms of salary, what is the best department to work for? The worst?
 
+use employees;
+SELECT m.dept_name as 'Department', AVG(salary_z_score) as 'Average Salary'
+FROM (
+		SELECT d.dept_name, (s.salary-m.avg_sal)/ (m.stddev_sal) AS salary_z_score
+		FROM dept_emp de 
+				JOIN departments d ON d.dept_no = de.dept_no AND de.to_date > NOW()
+				JOIN salaries s ON s.emp_no = de.emp_no AND s.to_date > NOW()
+				JOIN (
+						SELECT AVG(s.salary) as avg_sal, stddev(s.salary) as stddev_sal, d.dept_name, d.dept_no
+						FROM departments as d
+							JOIN dept_emp de ON (d.dept_no=de.dept_no)
+							JOIN employees e ON (de.emp_no=e.emp_no)
+							JOIN salaries s ON (e.emp_no=s.emp_no)
+						WHERE de.to_date='9999-01-01' AND s.to_date='9999-01-01'
+						GROUP BY d.dept_name) AS m ON m.dept_no = de.dept_no) as m			
+GROUP BY m.dept_name;
+
+
 -- +--------------------+-----------------+
 -- | dept_name          | salary_z_score  | 
 -- +--------------------+-----------------+
@@ -64,3 +82,4 @@ select* from digitss;
 -- | 14                 | 0.075180034951  | 
 -- | 15                 | 0.095192818408  | 
 -- +--------------------+-----------------+
+
