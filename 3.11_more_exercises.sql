@@ -273,3 +273,36 @@ select * from city;
 
 -- How long do the residance of Herat, Afghanistan typically live? 
 -- 45.9
+
+
+
+-- USE Sakila Database
+-- Display the first and last names in all lowercase of all the actors.
+SELECT LOWER(CONCAT(first_name, ' ', last_name)) FROM actor;
+-- You need to find the ID number, first name, and last name of an actor, of whom you know only the first name, 
+-- "Joe." What is one query would you could use to obtain this information?
+
+SELECT actor_id, first_name, last_name FROM actor WHERE first_name = 'Joe';
+
+-- Find all actors whose last name contain the letters "gen":
+SELECT actor_id, first_name, last_name FROM actor WHERE last_name LIKE '%gen%';
+
+-- Find all actors whose last names contain the letters "li". This time, order the rows by last name and first name, in that order.
+SELECT first_name, last_name FROM actor WHERE last_name LIKE '%li%' ORDER BY last_name, first_name;  
+
+-- Using IN, display the country_id and country columns for the following countries: Afghanistan, Bangladesh, and China:
+SELECT country_id, country FROM country WHERE country IN ('Afghanistan', 'Bangladesh', 'China');  
+
+-- List the last names of all the actors, as well as how many actors have that last name.
+SELECT last_name, count(*) FROM actor GROUP BY (last_name);  
+
+-- List last names of actors and the number of actors who have that last name, but only for names that are shared by at least two actors
+SELECT last_name, count(*) FROM actor GROUP BY (last_name)  HAVING count(*) > 2;  
+
+-- You cannot locate the schema of the address table. Which query would you use to re-create it?
+create table?
+
+-- Use JOIN to display the first and last names, as well as the address, of each staff member.
+SELECT s.first_name, s.last_name, CONCAT(a.address, ' ', a.district), a.postal_code FROM staff s
+JOIN address a ON a.address_id = s.address_id;
+-- Use JOIN to display the total amount rung up by each staff member in August of 2005.
