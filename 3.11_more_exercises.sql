@@ -303,6 +303,76 @@ SELECT last_name, count(*) FROM actor GROUP BY (last_name)  HAVING count(*) > 2;
 create table?
 
 -- Use JOIN to display the first and last names, as well as the address, of each staff member.
+
 SELECT s.first_name, s.last_name, CONCAT(a.address, ' ', a.district), a.postal_code FROM staff s
 JOIN address a ON a.address_id = s.address_id;
+
 -- Use JOIN to display the total amount rung up by each staff member in August of 2005.
+
+SELECT s.first_name, count(r.rental_date)
+FROM rental r
+JOIN staff s ON r.staff_id = s.staff_id
+WHERE DATE_FORMAT(r.rental_date, '%Y %m') = DATE_FORMAT('2005-08-01', '%Y %m')
+GROUP BY s.staff_id;
+
+-- List each film and the number of actors who are listed for that film.
+SELECT f.title, COUNT(*) 
+FROM film f
+LEFT JOIN film_actor fa ON f.film_id = fa.film_id
+LEFT JOIN actor a ON fa.actor_id = a.actor_id
+GROUP BY f.film_id;
+
+-- How many copies of the film Hunchback Impossible exist in the inventory system?
+SELECT COUNT(*) 
+FROM film f
+JOIN inventory i ON i.film_id = f.film_id
+WHERE f.title = 'Hunchback Impossible';
+
+-- SELECT fkq.title
+FROM film as f 
+JOIN language l ON f.language_id = l.language_id 
+JOIN (SELECT title 
+			FROM film 
+			WHERE title LIKE 'K%' OR title LIKE 'Q%') AS fkq ON fkq.title = f.title
+			where l.language_id = '1';
+-- Use subqueries to display all actors who appear in the film Alone Trip.
+SELECT CONCAT(a.first_name, ' ', a.last_name)
+FROM actor a
+JOIN film_actor fa ON a.actor_id = fa.actor_id
+JOIN (SELECT f.film_id FROM film f WHERE f.title = 'Alone Trip') AS ff ON ff.film_id = fa.film_id;
+
+-- NOT DONE
+-- You want to run an email marketing campaign in Canada, for which you will need the names and email addresses of all Canadian customers.
+
+
+-- Sales have been lagging among young families, and you wish to target all family movies for a promotion. Identify all movies categorized as famiy films.
+SELECT f.title
+FROM film f
+JOIN film_category fc ON fc.film_id = f.film_id
+JOIN category c ON c.category_id = fc.category_id
+WHERE c.category_id = '8';
+
+-- NOT DONE
+-- Write a query to display how much business, in dollars, each store brought in.
+
+
+-- Write a query to display for each store its store ID, city, and country.
+SELECT s.store_id, c.city, cy.country
+FROM store s
+JOIN address a ON a.address_id = s.address_id 
+JOIN city c ON c.city_id = a.city_id
+JOIN country cy ON cy.country_id = c.country_id;
+
+
+-- List the top five genres in gross revenue in descending order. 
+-- (Hint: you may need to use the following tables: 
+SELECT c.name AS 'Top 5 Selling Genres'
+FROM payment p
+LEFT JOIN rental r ON p.rental_id = r.rental_id
+LEFT JOIN inventory i ON i.inventory_id = r.inventory_id
+LEFT JOIN film_category fc ON fc.film_id = i.film_id
+LEFT JOIN category c ON c.category_id = fc.category_id
+GROUP BY c.name
+ORDER BY SUM(p.amount) DESC
+LIMIT 5;
+
