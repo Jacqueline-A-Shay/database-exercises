@@ -674,8 +674,13 @@ LIMIT 5;
 +-----------------+-------+
 5 rows in set (0.07 sec)
 
-What are the sales for each store for each month in 2005?
+/* What are the sales for each store for each month in 2005? */
 
+select MONTH(p.payment_date), s.store_id, SUM(p.amount) from payment p
+LEFT JOIN rental r ON r.rental_id = p.rental_id
+JOIN inventory i ON r.inventory_id = i.inventory_id
+JOIN store s ON s.store_id =  i.store_id
+GROUP BY MONTH(p.payment_date);
 
 +---------+----------+----------+
 | month   | store_id | sales    |
