@@ -466,3 +466,32 @@ SELECT * FROM film WHERE  description LIKE '%Boat';
 /* 
 Select the following columns from the film table where the description contains the word "Database" and the length of the film is greater than 3 hours. */
 SELECT * FROM film WHERE description LIKE '%Database%' AND length > 180;
+
+/* LIMIT Operator
+
+Select all columns from the payment table and only include the first 20 rows. */
+SELECT * FROM payment LIMIT 20;
+/* 
+Select the payment date and amount columns from the payment table for rows where the payment amount is greater than 5, and only select rows whose zero-based index in the result set is between 1000-2000. */
+
+SELECT payment_id, payment_date, amount FROM payment WHERE amount > 5 LIMIT 1000 OFFSET 1000;
+
+/* Select all columns from the customer table, limiting results to those where the zero-based index is between 1000-2000. */
+
+SELECT * FROM customer LIMIT 99 OFFSET 101;
+
+/* ORDER BY statement
+
+Select all columns from the film table and order rows by the length field in ascending order. */
+SELECT * from film ORDER BY length;
+/* 
+Select all distinct ratings from the film table ordered by rating in descending order. */
+SELECT DISTINCT(rating) FROM film ORDER BY rating DESC;
+/* 
+Select the payment date and amount columns from the payment table for the first 20 payments ordered by payment amount in descending order. */
+SELECT payment_date, amount FROM payment ORDER BY amount DESC LIMIT 20;
+/* 
+Select the title, description, special features, length, and rental duration columns from the film table for the first 10 films with behind the scenes footage under 2 hours in length and a rental duration between 5 and 7 days, ordered by length in descending order. */
+SELECT title, description, special_features, length, rental_duration FROM film 
+HAVING special_features LIKE '%behind the scene%' AND length < 120 AND (rental_duration BETWEEN 5 AND 7) 
+ORDER BY length DESC LIMIT 10;
