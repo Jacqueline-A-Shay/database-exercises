@@ -618,3 +618,75 @@ LIMIT 5;
 +---------------------+-------+
 5 rows in set (0.11 sec)
 
+-- What are the most most profitable films (in terms of gross revenue)?
+
+SELECT f.title, SUM(p.amount) from film f
+LEFT JOIN inventory i ON i.film_id = f.film_id
+JOIN rental r ON r.inventory_id = i.inventory_id
+JOIN payment p ON p.rental_id = r.rental_id
+GROUP BY f.title
+ORDER BY SUM(p.amount) DESC
+LIMIT 5;
+
++-------------------+--------+
+| title             | total  |
++-------------------+--------+
+| TELEGRAPH VOYAGE  | 231.73 |
+| WIFE TURN         | 223.69 |
+| ZORRO ARK         | 214.69 |
+| GOODFELLAS SALUTE | 209.69 |
+| SATURDAY LAMBS    | 204.72 |
++-------------------+--------+
+5 rows in set (0.17 sec)
+
+/* Who is the best customer? */
+
+SELECT CONCAT(c.last_name, ', ', c.first_name),  SUM(p.amount) FROM customer c
+RIGHT JOIN payment p ON p.customer_id = c.customer_id
+GROUP BY c.customer_id
+ORDER BY  SUM(p.amount) DESC
+LIMIT 1;
+
++------------+--------+
+| name       | total  |
++------------+--------+
+| SEAL, KARL | 221.55 |
++------------+--------+
+1 row in set (0.12 sec)
+
+/* Who are the most popular actors (that have appeared in the most films)? */
+
+SELECT CONCAT(a.last_name, ', ', a.first_name), count(*)
+FROM actor a 
+JOIN film_actor fa ON a.actor_id =  fa.actor_id
+JOIN film f ON f.film_id = fa.film_id
+GROUP BY a.actor_id
+ORDER BY count(*) DESC
+LIMIT 5;
++-----------------+-------+
+| actor_name      | total |
++-----------------+-------+
+| DEGENERES, GINA |    42 |
+| TORN, WALTER    |    41 |
+| KEITEL, MARY    |    40 |
+| CARREY, MATTHEW |    39 |
+| KILMER, SANDRA  |    37 |
++-----------------+-------+
+5 rows in set (0.07 sec)
+
+What are the sales for each store for each month in 2005?
+
+
++---------+----------+----------+
+| month   | store_id | sales    |
++---------+----------+----------+
+| 2005-05 |        1 |  2459.25 |
+| 2005-05 |        2 |  2364.19 |
+| 2005-06 |        1 |  4734.79 |
+| 2005-06 |        2 |  4895.10 |
+| 2005-07 |        1 | 14308.66 |
+| 2005-07 |        2 | 14060.25 |
+| 2005-08 |        1 | 11933.99 |
+| 2005-08 |        2 | 12136.15 |
++---------+----------+----------+
+8 rows in set (0.14 sec)
